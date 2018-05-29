@@ -1,2 +1,2 @@
-# stg-makeathon
+# STG Makeathon
 Repository for STG Makeathon
