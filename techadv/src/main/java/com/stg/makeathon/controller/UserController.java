@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.stg.makeathon.domain.LoginRequest;
 import com.stg.makeathon.domain.ServiceResponse;
 import com.stg.makeathon.domain.SignupRequest;
 import com.stg.makeathon.entities.PrefTopics;
+import com.stg.makeathon.entities.Users;
 import com.stg.makeathon.exception.TechAdvException;
 import com.stg.makeathon.services.UserServices;
 
@@ -51,6 +53,16 @@ public class UserController {
 			}
 		} catch (TechAdvException e) {
 			return ServiceResponse.getErrorReponse(e.getErrorMsg());
+		}
+	}
+	
+	@RequestMapping(value="/login")
+	public @ResponseBody ServiceResponse login(@RequestBody LoginRequest request) {
+		try {
+			Users user = userService.login(request);
+			return ServiceResponse.getSuccessResponse("Login successful.", user);
+		} catch (Exception e) {
+			return ServiceResponse.getErrorReponse(e.getMessage());
 		}
 	}
 }

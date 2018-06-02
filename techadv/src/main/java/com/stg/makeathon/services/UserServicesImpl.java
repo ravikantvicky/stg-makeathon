@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.stg.makeathon.domain.LoginRequest;
 import com.stg.makeathon.domain.SignupRequest;
 import com.stg.makeathon.entities.PrefTopics;
 import com.stg.makeathon.entities.UserPrefId;
@@ -55,5 +56,21 @@ public class UserServicesImpl implements UserServices {
 			e.printStackTrace();
 			throw new TechAdvException(500, e.getMessage());
 		}
+	}
+
+	@Override
+	public Users login(LoginRequest request) throws TechAdvException {
+		Users user = null;
+		try {
+			user = usersRepository.findByEmailAndPassword(request.getEmail(), request.getPassword());
+			if (user == null) {
+				throw new TechAdvException(401, "Invalid Credentials.");
+			}
+		} catch (TechAdvException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new TechAdvException(500, "Technical error, please contact support team.");
+		}
+		return user;
 	}
 }

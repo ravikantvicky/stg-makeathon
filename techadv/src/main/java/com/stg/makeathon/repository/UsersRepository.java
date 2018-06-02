@@ -7,5 +7,5 @@ import com.stg.makeathon.entities.Users;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Integer> {
-
+	public Users findByEmailAndPassword(String email, String password);
 }
