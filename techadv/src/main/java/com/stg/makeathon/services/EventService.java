@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.stg.makeathon.domain.Events;
+import com.stg.makeathon.entities.Events;
 
 @Service
 public interface EventService {

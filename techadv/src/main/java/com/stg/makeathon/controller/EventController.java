@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stg.makeathon.domain.EventServiceRequest;
-import com.stg.makeathon.domain.Events;
 import com.stg.makeathon.domain.ServiceResponse;
+import com.stg.makeathon.entities.Events;
 import com.stg.makeathon.services.EventService;
 
 @CrossOrigin

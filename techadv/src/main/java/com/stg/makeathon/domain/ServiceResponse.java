@@ -11,6 +11,18 @@ public class ServiceResponse {
 		content = null;
 	}
 
+	public ServiceResponse(int status, String message) {
+		this.status = status;
+		this.message = message;
+	}
+
+	public ServiceResponse(int status, String message, Object content) {
+		super();
+		this.status = status;
+		this.message = message;
+		this.content = content;
+	}
+
 	public int getStatus() {
 		return status;
 	}
@@ -33,5 +45,33 @@ public class ServiceResponse {
 
 	public void setContent(Object content) {
 		this.content = content;
+	}
+
+	public static ServiceResponse getSuccessResponse() {
+		return new ServiceResponse(1, "Request Successful.");
+	}
+
+	public static ServiceResponse getSuccessResponse(String message) {
+		return new ServiceResponse(1, message);
+	}
+
+	public static ServiceResponse getSuccessResponse(Object content) {
+		return new ServiceResponse(1, "Request Successful.", content);
+	}
+
+	public static ServiceResponse getSuccessResponse(String message, Object content) {
+		return new ServiceResponse(1, message, content);
+	}
+
+	public static ServiceResponse getErrorResponse() {
+		return new ServiceResponse(-1, "Unexpected Error Occured.");
+	}
+
+	public static ServiceResponse getErrorReponse(String message) {
+		return new ServiceResponse(-1, message);
+	}
+
+	public static ServiceResponse getErrorReponse(String message, Object content) {
+		return new ServiceResponse(-1, message, content);
 	}
 }

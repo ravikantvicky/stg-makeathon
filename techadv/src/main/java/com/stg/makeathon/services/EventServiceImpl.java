@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.stg.makeathon.domain.Events;
+import com.stg.makeathon.entities.Events;
 import com.stg.makeathon.repository.EventsRepository;
 
 public class EventServiceImpl implements EventService {
@@ -48,7 +49,7 @@ public class EventServiceImpl implements EventService {
 			result.addAll(eventRepository.findUpcomingEvents());
 		}
 
-		return result;
+		return result.stream().distinct().collect(Collectors.toList());
 	}
 
 	@Override

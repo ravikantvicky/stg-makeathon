@@ -1,4 +1,4 @@
-package com.stg.makeathon.domain;
+package com.stg.makeathon.entities;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -6,6 +6,7 @@ import java.sql.Time;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Table(name = "events")
 public class Events {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "event_id")
 	private int eventId;
 	@JsonIgnore
@@ -116,5 +117,18 @@ public class Events {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Events) {
+			return ((Events) obj).eventId == this.eventId;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.eventId;
 	}
 }
