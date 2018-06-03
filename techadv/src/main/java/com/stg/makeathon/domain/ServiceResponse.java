@@ -67,11 +67,11 @@ public class ServiceResponse {
 		return new ServiceResponse(-1, "Unexpected Error Occured.");
 	}
 
-	public static ServiceResponse getErrorReponse(String message) {
+	public static ServiceResponse getErrorResponse(String message) {
 		return new ServiceResponse(-1, message);
 	}
 
-	public static ServiceResponse getErrorReponse(String message, Object content) {
+	public static ServiceResponse getErrorResponse(String message, Object content) {
 		return new ServiceResponse(-1, message, content);
 	}
 }

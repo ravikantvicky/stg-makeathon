@@ -40,6 +40,9 @@ public class UserServicesImpl implements UserServices {
 	public boolean signUp(SignupRequest request) throws TechAdvException {
 		try {
 			Users user = CommonUtil.mapUserRequest(request);
+			if (usersRepository.findByEmail(user.getEmail()) != null) {
+				throw new TechAdvException(401, "Email Id already exists, please login if already signed up.");
+			}
 			if (usersRepository.saveAndFlush(user) != null) {
 				List<UserPrefrences> prefrences = new ArrayList<>();
 				request.getPrefrences().forEach(prefId -> {

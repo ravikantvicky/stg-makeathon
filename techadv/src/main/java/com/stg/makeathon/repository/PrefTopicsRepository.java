@@ -7,5 +7,5 @@ import com.stg.makeathon.entities.PrefTopics;
 
 @Repository
 public interface PrefTopicsRepository extends JpaRepository<PrefTopics, Integer> {
-
+	public PrefTopics findByPrefTopicIgnoreCase(String prefTopic);
 }

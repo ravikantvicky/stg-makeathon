@@ -39,7 +39,7 @@ public class UserController {
 			List<PrefTopics> res = userService.getAllPrefTopics();
 			return ServiceResponse.getSuccessResponse(res);
 		} catch (TechAdvException e) {
-			return ServiceResponse.getErrorReponse(e.getMessage());
+			return ServiceResponse.getErrorResponse(e.getMessage());
 		}
 	}
 
@@ -49,10 +49,10 @@ public class UserController {
 			if (userService.signUp(request)) {
 				return ServiceResponse.getSuccessResponse("Registraction successful. Please login to continue.");
 			} else {
-				return ServiceResponse.getErrorReponse("Unable to complete registration.");
+				return ServiceResponse.getErrorResponse("Unable to complete registration.");
 			}
 		} catch (TechAdvException e) {
-			return ServiceResponse.getErrorReponse(e.getErrorMsg());
+			return ServiceResponse.getErrorResponse(e.getErrorMsg());
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class UserController {
 			Users user = userService.login(request);
 			return ServiceResponse.getSuccessResponse("Login successful.", user);
 		} catch (Exception e) {
-			return ServiceResponse.getErrorReponse(e.getMessage());
+			return ServiceResponse.getErrorResponse(e.getMessage());
 		}
 	}
 }
