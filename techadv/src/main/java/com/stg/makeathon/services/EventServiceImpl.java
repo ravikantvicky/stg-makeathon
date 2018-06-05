@@ -2,9 +2,13 @@ package com.stg.makeathon.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,5 +166,33 @@ public class EventServiceImpl implements EventService {
 			e.printStackTrace();
 			throw new TechAdvException(500, e.getMessage());
 		}
+	}
+
+	@Override
+	public Set<String> getSearchKeyword() throws TechAdvException {
+		Set<String> searchKeywords = new HashSet<>();
+		try {
+			List<String> searchTxt = eventRepository.findSearchText();
+			searchTxt.forEach(str -> {
+				str = str.trim().replace("(", "").replace(")", "").replace("|", ",").replace("--", ",").replace("-",
+						",");
+				if (str.contains(",")) {
+					String[] st = str.split(",");
+					for (String s : st) {
+						searchKeywords.add(s.trim());
+					}
+				} else {
+					searchKeywords.add(str.trim());
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new TechAdvException(500, e.getMessage());
+		}
+		// return searchKeywords.stream().sorted((a, b) ->
+		// a.compareTo(b)).collect(Collectors.toSet());
+		SortedSet<String> result = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		result.addAll(searchKeywords);
+		return result;
 	}
 }

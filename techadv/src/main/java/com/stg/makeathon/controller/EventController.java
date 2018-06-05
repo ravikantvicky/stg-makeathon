@@ -67,4 +67,15 @@ public class EventController {
 			return ServiceResponse.getErrorResponse();
 		}
 	}
+
+	@RequestMapping(value = "/getSearchKeyword", method = RequestMethod.GET)
+	public @ResponseBody ServiceResponse getSearchKeyword() {
+		try {
+			return ServiceResponse.getSuccessResponse(eventService.getSearchKeyword());
+		} catch (TechAdvException e) {
+			return ServiceResponse.getErrorResponse(e.getErrorMsg());
+		} catch (Exception e) {
+			return ServiceResponse.getErrorResponse();
+		}
+	}
 }

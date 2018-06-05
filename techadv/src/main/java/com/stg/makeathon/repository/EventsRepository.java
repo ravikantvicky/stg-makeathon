@@ -23,4 +23,7 @@ public interface EventsRepository extends JpaRepository<Events, Integer> {
 
 	@Query(value = "SELECT * FROM `events` e WHERE STR_TO_DATE(concat(e.event_date, ' ', e.event_time), '%Y-%m-%d %H:%i:%s')>current_timestamp ORDER BY STR_TO_DATE(concat(e.event_date, ' ', e.event_time), '%Y-%m-%d %H:%i:%s') LIMIT 0,40", nativeQuery = true)
 	public List<Events> findUpcomingEvents();
+
+	@Query(value = "SELECT keywords FROM events UNION SELECT location FROM events", nativeQuery = true)
+	public List<String> findSearchText();
 }

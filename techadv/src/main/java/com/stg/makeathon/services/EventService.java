@@ -2,6 +2,7 @@ package com.stg.makeathon.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -20,4 +21,6 @@ public interface EventService {
 	public Map<String, String> getSearchCriteria(String searchText);
 	
 	public void updateEventClick(String userId, String eventId) throws TechAdvException;
+	
+	public Set<String> getSearchKeyword() throws TechAdvException;
 }
