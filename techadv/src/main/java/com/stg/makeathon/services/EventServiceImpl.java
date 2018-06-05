@@ -17,10 +17,12 @@ import com.stg.makeathon.entities.Events;
 import com.stg.makeathon.entities.PrefTopics;
 import com.stg.makeathon.entities.UserPrefId;
 import com.stg.makeathon.entities.UserPrefrences;
+import com.stg.makeathon.entities.UserSearch;
 import com.stg.makeathon.exception.TechAdvException;
 import com.stg.makeathon.repository.EventsRepository;
 import com.stg.makeathon.repository.PrefTopicsRepository;
 import com.stg.makeathon.repository.UserPrefRepository;
+import com.stg.makeathon.repository.UserSearchRepository;
 
 public class EventServiceImpl implements EventService {
 
@@ -30,6 +32,8 @@ public class EventServiceImpl implements EventService {
 	private PrefTopicsRepository prefTopicRepository;
 	@Autowired
 	private UserPrefRepository userPrefRepository;
+	@Autowired
+	private UserSearchRepository userSearchRepository;
 
 	@Override
 	public List<Events> getEventsWithoutSearchCriteria(String userId, String location) {
@@ -73,6 +77,12 @@ public class EventServiceImpl implements EventService {
 		List<Events> searchRes = new ArrayList<>();
 		try {
 			Map<String, String> searchCriteria = getSearchCriteria(searchText);
+			UserSearch us = new UserSearch();
+			us.setTopic(searchCriteria.get("keyword"));
+			us.setLocation(searchCriteria.get("location"));
+			us.setUserId(Integer.valueOf(userId));
+			userSearchRepository.save(us);
+
 			if (searchCriteria != null && searchCriteria.containsKey("location")) {
 				searchRes = eventRepository.findByKeywordAndLocation("%" + searchCriteria.get("keyword") + "%",
 						searchCriteria.get("location"));
@@ -99,8 +109,18 @@ public class EventServiceImpl implements EventService {
 		List<String> locations = new ArrayList<>();
 
 		if (userId != null) {
-			keywords.add("java");
-			locations.add("Bhubaneswar");
+			List<UserPrefrences> userPref = userPrefRepository
+					.findByIdUserIdOrderByClickCountDesc(Integer.valueOf(userId));
+			List<Integer> prefIds = new ArrayList<>();
+			userPref.forEach(p -> prefIds.add(p.getId().getPrefId()));
+
+			keywords.addAll(prefTopicRepository.findPrefTopicByPrefIdIn(prefIds));
+
+			List<UserSearch> us = userSearchRepository.findByUserId(Integer.valueOf(userId));
+			us.forEach(u -> {
+				keywords.add(u.getTopic().trim());
+				locations.add(u.getLocation().trim());
+			});
 		}
 
 		Map<String, List<String>> result = new HashMap<>();
@@ -189,8 +209,6 @@ public class EventServiceImpl implements EventService {
 			e.printStackTrace();
 			throw new TechAdvException(500, e.getMessage());
 		}
-		// return searchKeywords.stream().sorted((a, b) ->
-		// a.compareTo(b)).collect(Collectors.toSet());
 		SortedSet<String> result = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		result.addAll(searchKeywords);
 		return result;
